@@ -1,21 +1,18 @@
 
-var express = require('express');
-var app = express();
-app.use(express.static('./www'));
+const express = require('express');
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
-var server = require('http').Server(app);
-
-
-  
- 
 app.get('/', (req, res) => {
-const UserAgent = require('user-agents');
-const userAgent = new UserAgent();
-console.log(userAgent.toString());
-
-    
+  res.sendFile('www/index.html');
 });
 
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});
 
 
 server.listen(process.env.PORT || 80, function(){
